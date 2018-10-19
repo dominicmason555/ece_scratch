@@ -17,7 +17,7 @@
 *.dll
 
 # Fortran module files
-*.mod
+#*.mod # Used for model files
 *.smod
 
 # Compiled Static libraries

@@ -4,13 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "E:/Documents/Work/ECE_LAB/parse_test/src/main.cpp" "E:/Documents/Work/ECE_LAB/parse_test/cmake-build-debug/CMakeFiles/parse_test.dir/src/main.cpp.obj"
+  "/home/d/Documents/ECE_LAB/ece_scratch/src/main.cpp" "/home/d/Documents/ECE_LAB/ece_scratch/cmake-build-debug/CMakeFiles/parse_test.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../include"
+  "../src"
   )
 
 # Targets to which this target links.

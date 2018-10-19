@@ -1,3 +1,1 @@
-C:\Users\eeydem\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4892.24\bin\cmake\win\bin\cmake.exe -E remove -f CMakeFiles\parse_test.dir/objects.a
-C:\msys64\mingw64\bin\ar.exe cr CMakeFiles\parse_test.dir/objects.a @CMakeFiles\parse_test.dir\objects1.rsp
-C:\msys64\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\parse_test.dir/objects.a -Wl,--no-whole-archive  -o parse_test.exe -Wl,--out-implib,libparse_test.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\parse_test.dir\linklibs.rsp
+/usr/lib64/ccache/g++  -g   CMakeFiles/parse_test.dir/src/main.cpp.o  -o parse_test  -L/home/d/Documents/ECE_LAB/ece_scratch/src 

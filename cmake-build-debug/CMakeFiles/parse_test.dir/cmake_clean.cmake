@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/parse_test.dir/src/main.cpp.obj"
+  "CMakeFiles/parse_test.dir/src/main.cpp.o"
   "parse_test.pdb"
-  "parse_test.exe"
-  "parse_test.exe.manifest"
-  "libparse_test.dll.a"
+  "parse_test"
 )
 
 # Per-language clean rules from dependency scanning.
