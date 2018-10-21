@@ -1,4 +1,4 @@
-/home/d/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/182.4892.24/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/lib64/ccache/gcc -DCMAKE_CXX_COMPILER=/usr/lib64/ccache/g++ -G "CodeBlocks - Unix Makefiles" /home/d/Documents/ECE_LAB/ece_scratch
+C:\Users\eeydem\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4892.24\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" E:\Documents\Work\ECE_LAB\parse_test
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/d/Documents/ECE_LAB/ece_scratch/cmake-build-debug
+-- Build files have been written to: E:/Documents/Work/ECE_LAB/parse_test/cmake-build-debug

@@ -1,9 +1,8 @@
 #include <iostream>
-#include <string>
 
 #include "ModFile.h"
 
-int main()
+int main(int argc, char *argv[])
 {
     ModFile exampleFile("../ExampleModel1.mod");
     ModFileResult result = exampleFile.load();

@@ -2,33 +2,37 @@
 #include <fstream>
 #include <map>
 #include <sstream>
-#include <vector>
 
 #include "ModFile.h"
 #include "Vec3.h"
 
 
-void ModFile::parseVertex(const std::string line, int lineNum) {
+ModFileResult ModFile::parseVertex(const std::string line, int lineNum)
+{
     std::stringstream in(line);
     int num;
     Vec3 v;
     in.ignore(1, ' ');
     in >> num >> v;
     vertices[num] = v;
-    std::cout << "Line " << lineNum << ": parsed vertex " << num << " " << vertices[num] << std::endl;
+    std::cout << "Line " << lineNum << ": parsed vertex " << num << " " << vertices.at(num) << std::endl;
+    return {true, "Success"};
 }
 
-void ModFile::parseMaterial(std::string line, int lineNum) {
+ModFileResult ModFile::parseMaterial(std::string line, int lineNum)
+{
     std::stringstream in(line);
     int num;
     Material mat;
     in.ignore(1, ' ');
     in >> num >> mat;
     materials[num] = mat;
-    std::cout << "Line " << lineNum << ": parsed material " << num << " " << materials[num] << std::endl;
+    std::cout << "Line " << lineNum << ": parsed material " << num << " " << materials.at(num) << std::endl;
+    return {true, "Success"};
 }
 
-void ModFile::parseCell(std::string line, int lineNum) {
+ModFileResult ModFile::parseCell(std::string line, int lineNum)
+{
     std::stringstream in(line);
     int num;
     char shapeLetter;
@@ -44,39 +48,43 @@ void ModFile::parseCell(std::string line, int lineNum) {
             shape = Shape::PYRAMIDAL;
             break;
         case 't':
-            shape = Shape::TETRAHEDRAl;
+            shape = Shape::TETRAHEDRAL;
             break;
         default:
-            return;
+            return {false, "Invalid Shape"};
     }
-    /*
+
     if (materials.count(materialNum) == 0)
-        return;
+        return {false, "Invalid material number in file"};
+
     Material material = materials.at(materialNum);
     Cell cell(shape, material);
-    int vertNum;
-    while (in >> vertNum)
-    {
-        if (vertices.count(vertNum != 0))
-        {
-            Vec3 vert = vertices.at(vertNum);
-            cell.vertices.push_back(vert);
-        }
+    int vertexNum;
+    while (in >> vertexNum) {
+        if (vertices.count(vertexNum != 0)) {
+            Vec3 vertex = vertices.at(vertexNum);
+            cell.vertices.push_back(vertex);
+        } else
+            return {false, "Invalid vertex number in file"};
     }
-    */
-    std::cout << "Line " << lineNum << ": parsed Cell " << num << " " << cells[num] << std::endl;
+    cells.emplace(num, cell);
+    std::cout << "Line " << lineNum << ": parsed Cell " << num << " " << cells.at(num) << std::endl;
+    return {true, "Success"};
 }
 
 ModFile::ModFile(const std::string fileName) :
-        fileName(fileName) {};
+        fileName(fileName)
+{};
 
-ModFileResult ModFile::load() {
+ModFileResult ModFile::load()
+{
     std::ifstream file(fileName);
     if (!file.is_open())
         return {false, "File Not Found"};
 
     std::string line;
     int lineNum = 0;
+    ModFileResult result;
 
     while (std::getline(file, line)) {
         lineNum++;
@@ -85,56 +93,26 @@ ModFileResult ModFile::load() {
             case '\r':
             case '\0':
             case '#':
+                result = {true, "Success"};
                 break;
             case 'm':
-                parseMaterial(line, lineNum);
+                result = parseMaterial(line, lineNum);
                 break;
             case 'v':
-                parseVertex(line, lineNum);
+                result = parseVertex(line, lineNum);
                 break;
             case 'c':
-                parseCell(line, lineNum);
+                result = parseCell(line, lineNum);
                 break;
             default:
-                std::cout << "File Machine Broke" << std::endl;
+                result = {false, "Invalid start character in file"};
                 break;
+        }
+        if (!result.success){
+            result.error += " at line ";
+            result.error += std::to_string(lineNum);
+            return result;
         }
     }
     return {true, "Success"};
 }
-
-std::ostream &operator<<(std::ostream &os, const Cell &cell) {
-    os << "Cell: shape: " << cell.shape << " material: " << cell.material << " vertices: " << cell.vertices.size();
-    return os;
-}
-
-std::ostream &operator<<(std::ostream &os, const Shape &shape) {
-    switch (shape) {
-        case Shape::HEXAHEDRAL:
-            os << "Hexahedral";
-            break;
-        case Shape::PYRAMIDAL:
-            os << "Pyramidal";
-            break;
-        case Shape::TETRAHEDRAl:
-            os << "Tetrahedral";
-            break;
-        default:
-            os << "Broken Shape";
-    }
-}
-
-std::istream &operator>>(std::istream &in, Material &out) {
-    in >> out.density;
-    in >> out.name;
-    return in;
-}
-
-std::ostream &operator<<(std::ostream &out, const Material &mat) {
-    out << mat.name << " with density: " << mat.density;
-    return out;
-}
-
-Cell::Cell(Cell &other):
-shape(other.shape), material(other.material), vertices(other.vertices)
-{}

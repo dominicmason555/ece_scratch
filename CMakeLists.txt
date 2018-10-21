@@ -9,6 +9,8 @@ include_directories(src)
 add_executable(ece_scratch
         include/ModFile.h
         include/Vec3.h
+        include/Cell.h
         src/main.cpp
         src/ModFile.cpp
-        src/Vec3.cpp)
+        src/Vec3.cpp
+        src/Cell.cpp)

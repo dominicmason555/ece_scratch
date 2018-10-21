@@ -1,1 +1,0 @@
-/usr/lib64/ccache/g++  -g   CMakeFiles/parse_test.dir/src/main.cpp.o  -o parse_test  -L/home/d/Documents/ECE_LAB/ece_scratch/src 
