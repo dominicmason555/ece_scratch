@@ -4,7 +4,6 @@
 #include <sstream>
 
 #include "ModFile.h"
-#include "Vec3.h"
 
 
 ModFileResult ModFile::parseVertex(const std::string line, int lineNum)
@@ -13,7 +12,8 @@ ModFileResult ModFile::parseVertex(const std::string line, int lineNum)
     int num;
     Vec3 v;
     in.ignore(1, ' ');
-    in >> num >> v;
+    if (not(in >> num >> v))
+        return {false, "Error parsing vertex in file"};
     vertices[num] = v;
     std::cout << "Line " << lineNum << ": parsed vertex " << num << " " << vertices.at(num) << std::endl;
     return {true, "Success"};
@@ -25,7 +25,8 @@ ModFileResult ModFile::parseMaterial(std::string line, int lineNum)
     int num;
     Material mat;
     in.ignore(1, ' ');
-    in >> num >> mat;
+    if (not(in >> num >> mat))
+        return {false, "Error parsing material in file"};
     materials[num] = mat;
     std::cout << "Line " << lineNum << ": parsed material " << num << " " << materials.at(num) << std::endl;
     return {true, "Success"};
@@ -39,35 +40,42 @@ ModFileResult ModFile::parseCell(std::string line, int lineNum)
     int materialNum;
     Shape shape;
     in.ignore(1, ' ');
-    in >> num >> shapeLetter >> materialNum;
+    if (not(in >> num >> shapeLetter >> materialNum))
+        return {false, "Error parsing cell in file"};
+
+    int numberOfVertices = 0;
     switch (shapeLetter) {
         case 'h':
             shape = Shape::HEXAHEDRAL;
+            numberOfVertices = 8;
             break;
         case 'p':
             shape = Shape::PYRAMIDAL;
+            numberOfVertices = 5;
             break;
         case 't':
             shape = Shape::TETRAHEDRAL;
+            numberOfVertices = 4;
             break;
         default:
-            return {false, "Invalid Shape"};
+            return {false, "Invalid shape in file"};
     }
-
     if (materials.count(materialNum) == 0)
         return {false, "Invalid material number in file"};
 
-    Material material = materials.at(materialNum);
-    Cell cell(shape, material);
+    Cell cell(shape, materials.at(materialNum));
+
     int vertexNum;
     while (in >> vertexNum) {
-        if (vertices.count(vertexNum != 0)) {
-            Vec3 vertex = vertices.at(vertexNum);
-            cell.vertices.push_back(vertex);
+        if (vertices.find(vertexNum) != vertices.end()) {
+            cell.vertices.push_back(vertices.at(vertexNum));
         } else
             return {false, "Invalid vertex number in file"};
     }
-    cells.emplace(num, cell);
+    if (cell.vertices.size() != numberOfVertices)
+        return {false, "Wrong number of vertices for shape in file"};
+
+    cells.emplace(num, std::move(cell));
     std::cout << "Line " << lineNum << ": parsed Cell " << num << " " << cells.at(num) << std::endl;
     return {true, "Success"};
 }
@@ -108,7 +116,7 @@ ModFileResult ModFile::load()
                 result = {false, "Invalid start character in file"};
                 break;
         }
-        if (!result.success){
+        if (not result.success) {
             result.error += " at line ";
             result.error += std::to_string(lineNum);
             return result;

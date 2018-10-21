@@ -35,7 +35,7 @@ v 7 0. 1. 1.
 
 # e.g. cell 0 is a hexahredal, made from material 0 (copper) which and 
 # has nodes 0 - 7 define its verteces
-c 0 h 0 0 1 2 3 4 5 6 7
+        c 0 h 0 0 1 2 3 4 5 6 7
 
 
 
