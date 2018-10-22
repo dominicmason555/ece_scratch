@@ -1,6 +1,4 @@
-
-
-
+#include <cmath>
 #include "Vec3.h"
 
 Vec3 Vec3::operator+(const Vec3 other) const

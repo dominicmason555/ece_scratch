@@ -17,12 +17,14 @@ public:
 
     friend std::istream &operator>>(std::istream &in, Material &out);
 
-    int density;
+    int density = -1;
     std::string name;
 };
 
 class Cell {
 public:
+    Cell() :
+        material(), shape(Shape::HEXAHEDRAL) {};
     Cell(Shape shape, Material material) :
             shape(shape), material(material), vertices() {}
 

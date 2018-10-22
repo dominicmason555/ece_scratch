@@ -4,14 +4,15 @@
 
 int main(int argc, char *argv[])
 {
-    Model exampleFile("../ExampleModel1.mod");
-    Result result = exampleFile.load();
-    if (not result.success)
-    {
-        std::cout << "Error Parsing File: " << result.error << std::endl;
-    }
-    exampleFile.describeMaterials();
-    exampleFile.describeVertices();
-    exampleFile.describeCells();
+    if (auto file = Model("../ExampleModel1.mod").load()) {
+        file.value.describeMaterials();
+        file.value.describeVertices();
+        file.value.describeCells();
+        if (auto res = file.value.getCell(2))
+            std::cout << res.value << std::endl;
+        else
+            std::cout << res.error << std::endl;
+    } else
+        std::cout << file.error << std::endl;
     return 0;
 }

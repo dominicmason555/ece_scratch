@@ -5,7 +5,11 @@
 #include <Model.h>
 
 
-Result Model::parseVertex(const std::string line)
+#include "Model.h"
+#include "Result.h"
+
+
+simpleResult Model::parseVertex(const std::string line)
 {
     std::stringstream in(line);
     int num;
@@ -18,7 +22,7 @@ Result Model::parseVertex(const std::string line)
     return {true, "Success"};
 }
 
-Result Model::parseMaterial(std::string line)
+simpleResult Model::parseMaterial(std::string line)
 {
     std::stringstream in(line);
     int num;
@@ -31,7 +35,7 @@ Result Model::parseMaterial(std::string line)
     return {true, "Success"};
 }
 
-Result Model::parseCell(std::string line)
+simpleResult Model::parseCell(std::string line)
 {
     std::stringstream in(line);
     int num;
@@ -83,15 +87,15 @@ Model::Model(const std::string fileName) :
         fileName(fileName)
 {};
 
-Result Model::load()
+Result<Model> Model::load()
 {
     std::ifstream file(fileName);
     if (!file.is_open())
-        return {false, "File Not Found"};
+        return {false, {}, "File Not Found"};
 
     std::string line;
     int lineNum = 0;
-    Result result;
+    simpleResult result;
 
     while (std::getline(file, line)) {
         lineNum++;
@@ -118,10 +122,10 @@ Result Model::load()
         if (not result.success) {
             result.error += " at line ";
             result.error += std::to_string(lineNum);
-            return result;
+            return {false, {}, result.error};
         }
     }
-    return {true, "Success"};
+    return {true, *this};
 }
 
 uint64_t Model::numVertices()
@@ -173,13 +177,11 @@ bool Model::cellExists(int id)
     return cells.find(id) != cells.end();
 }
 
-Cell Model::getCell(int id)
+Result<Cell> Model::getCell(int id)
 {
     if (cellExists(id))
-        return cells.at(id);
-    else {
-        std::cout << "ERROR: attempted to access non-existent cell" << std::endl;
-        std::exit(-1);
-    }
+        return {true, cells.at(id)};
+    else
+        return {false, {}, "Cell " + std::to_string(id) + " accessed which does not exist"};
 }
 

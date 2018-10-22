@@ -4,8 +4,9 @@
 
 #include "Vec3.h"
 #include "Cell.h"
+#include "Result.h"
 
-struct Result
+struct simpleResult
 {
     bool success = false;
     std::string error = "Unknown Error";
@@ -19,16 +20,18 @@ private:
     std::map<int, Material> materials;
     std::map<int, Cell> cells;
 
-    Result parseVertex(const std::string line);
+    simpleResult parseVertex(std::string line);
 
-    Result parseMaterial(std::string line);
+    simpleResult parseMaterial(std::string line);
 
-    Result parseCell(std::string line);
+    simpleResult parseCell(std::string line);
 
 public:
+    Model() = default;
+
     explicit Model(std::string fileName);
 
-    Result load();
+    Result<Model> load();
 
     uint64_t numVertices();
 
@@ -46,7 +49,7 @@ public:
 
     bool cellExists(int id);
 
-    Cell getCell(int id);
+    Result<Cell> getCell(int id);
 
 };
 

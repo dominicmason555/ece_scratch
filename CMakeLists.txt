@@ -10,7 +10,9 @@ add_executable(ece_scratch
         include/Model.h
         include/Vec3.h
         include/Cell.h
+        include/Result.h
         src/main.cpp
         src/Model.cpp
         src/Vec3.cpp
-        src/Cell.cpp)
+        src/Cell.cpp
+        )

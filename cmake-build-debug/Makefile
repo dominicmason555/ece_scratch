@@ -149,32 +149,32 @@ src/Cell.cpp.s:
 	$(MAKE) -f CMakeFiles\ece_scratch.dir\build.make CMakeFiles/ece_scratch.dir/src/Cell.cpp.s
 .PHONY : src/Cell.cpp.s
 
-src/ModFile.obj: src/ModFile.cpp.obj
+src/Model.obj: src/Model.cpp.obj
 
-.PHONY : src/ModFile.obj
+.PHONY : src/Model.obj
 
 # target to build an object file
-src/ModFile.cpp.obj:
-	$(MAKE) -f CMakeFiles\ece_scratch.dir\build.make CMakeFiles/ece_scratch.dir/src/ModFile.cpp.obj
-.PHONY : src/ModFile.cpp.obj
+src/Model.cpp.obj:
+	$(MAKE) -f CMakeFiles\ece_scratch.dir\build.make CMakeFiles/ece_scratch.dir/src/Model.cpp.obj
+.PHONY : src/Model.cpp.obj
 
-src/ModFile.i: src/ModFile.cpp.i
+src/Model.i: src/Model.cpp.i
 
-.PHONY : src/ModFile.i
+.PHONY : src/Model.i
 
 # target to preprocess a source file
-src/ModFile.cpp.i:
-	$(MAKE) -f CMakeFiles\ece_scratch.dir\build.make CMakeFiles/ece_scratch.dir/src/ModFile.cpp.i
-.PHONY : src/ModFile.cpp.i
+src/Model.cpp.i:
+	$(MAKE) -f CMakeFiles\ece_scratch.dir\build.make CMakeFiles/ece_scratch.dir/src/Model.cpp.i
+.PHONY : src/Model.cpp.i
 
-src/ModFile.s: src/ModFile.cpp.s
+src/Model.s: src/Model.cpp.s
 
-.PHONY : src/ModFile.s
+.PHONY : src/Model.s
 
 # target to generate assembly for a file
-src/ModFile.cpp.s:
-	$(MAKE) -f CMakeFiles\ece_scratch.dir\build.make CMakeFiles/ece_scratch.dir/src/ModFile.cpp.s
-.PHONY : src/ModFile.cpp.s
+src/Model.cpp.s:
+	$(MAKE) -f CMakeFiles\ece_scratch.dir\build.make CMakeFiles/ece_scratch.dir/src/Model.cpp.s
+.PHONY : src/Model.cpp.s
 
 src/Vec3.obj: src/Vec3.cpp.obj
 
@@ -242,9 +242,9 @@ help:
 	@echo ... src/Cell.obj
 	@echo ... src/Cell.i
 	@echo ... src/Cell.s
-	@echo ... src/ModFile.obj
-	@echo ... src/ModFile.i
-	@echo ... src/ModFile.s
+	@echo ... src/Model.obj
+	@echo ... src/Model.i
+	@echo ... src/Model.s
 	@echo ... src/Vec3.obj
 	@echo ... src/Vec3.i
 	@echo ... src/Vec3.s
