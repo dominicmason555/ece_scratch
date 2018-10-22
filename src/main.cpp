@@ -1,14 +1,17 @@
 #include <iostream>
 
-#include "ModFile.h"
+#include "Model.h"
 
 int main(int argc, char *argv[])
 {
-    ModFile exampleFile("../ExampleModel1.mod");
-    ModFileResult result = exampleFile.load();
+    Model exampleFile("../ExampleModel1.mod");
+    Result result = exampleFile.load();
     if (not result.success)
     {
         std::cout << "Error Parsing File: " << result.error << std::endl;
     }
+    exampleFile.describeMaterials();
+    exampleFile.describeVertices();
+    exampleFile.describeCells();
     return 0;
 }

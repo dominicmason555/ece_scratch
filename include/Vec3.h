@@ -25,9 +25,14 @@ public:
 
     Vec3 operator-(Vec3 other) const;
 
+    Vec3 crossProduct(Vec3 other) const;
+
     bool operator==(Vec3 other) const;
 
     bool operator!=(Vec3 other) const;
 
-    Vec3 dirFrom(Vec3 other) const;
+    double dotProduct(Vec3 other) const;
+
+    double length() const;
+
 };
