@@ -12,6 +12,18 @@ public:
     {
         return valid;
     }
-    // get that dereference
+    T& operator*() {
+        return value;
+    }
+    T* operator->()
+    {
+        return &value;
+    }
+    friend std::ostream &operator<<(std::ostream &out, const Result<T> &res)
+    {
+        if (res.valid)
+            out << res.value;
+        return out;
+    }
 };
 

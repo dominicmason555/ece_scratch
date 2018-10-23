@@ -9,33 +9,37 @@
 #include "Result.h"
 
 
-simpleResult Model::parseVertex(const std::string line)
+bool Model::parseVertex(const std::string line, std::string &error)
 {
     std::stringstream in(line);
     int num;
     Vec3 v;
     in.ignore(1, ' ');
-    if (not(in >> num >> v))
-        return {false, "Error parsing vertex from file"};
+    if (not(in >> num >> v)) {
+        error = "Error parsing vertex from file";
+        return false;
+    }
     vertices.emplace(num, v);
     std::cout << "Parsed vertex " << num << " " << vertices.at(num) << std::endl;
-    return {true, "Success"};
+    return true;
 }
 
-simpleResult Model::parseMaterial(std::string line)
+bool Model::parseMaterial(std::string line, std::string &error)
 {
     std::stringstream in(line);
     int num;
     Material mat;
     in.ignore(1, ' ');
-    if (not(in >> num >> mat))
-        return {false, "Error parsing material from file"};
+    if (not(in >> num >> mat)) {
+        error = "Error parsing material from file";
+        return false;
+    }
     materials.emplace(num, mat);
     std::cout << "Parsed material " << num << " " << materials.at(num) << std::endl;
-    return {true, "Success"};
+    return true;
 }
 
-simpleResult Model::parseCell(std::string line)
+bool Model::parseCell(std::string line, std::string &error)
 {
     std::stringstream in(line);
     int num;
@@ -43,8 +47,10 @@ simpleResult Model::parseCell(std::string line)
     int materialNum;
     Shape shape;
     in.ignore(1, ' ');
-    if (not(in >> num >> shapeLetter >> materialNum))
-        return {false, "Error parsing cell from file"};
+    if (not(in >> num >> shapeLetter >> materialNum)) {
+        error = "Error parsing cell from file";
+        return false;
+    }
 
     int numberOfVertices = 0;
     switch (shapeLetter) {
@@ -61,10 +67,13 @@ simpleResult Model::parseCell(std::string line)
             numberOfVertices = 4;
             break;
         default:
-            return {false, "Invalid shape in file"};
+            error = "Invalid shape in file";
+            return false;
     }
-    if (materials.count(materialNum) == 0)
-        return {false, "Invalid material number in file"};
+    if (materials.count(materialNum) == 0) {
+        error = "Invalid material number in file";
+        return false;
+    }
 
     Cell cell(shape, materials.at(materialNum));
 
@@ -72,15 +81,19 @@ simpleResult Model::parseCell(std::string line)
     while (in >> vertexNum) {
         if (vertices.find(vertexNum) != vertices.end()) {
             cell.vertices.push_back(vertices.at(vertexNum));
-        } else
-            return {false, "Invalid vertex number in file"};
+        } else {
+            error = "Invalid vertex number in file";
+            return false;
+        }
     }
-    if (cell.vertices.size() != numberOfVertices)
-        return {false, "Wrong number of vertices for shape in file"};
+    if (cell.vertices.size() != numberOfVertices) {
+        error = "Wrong number of vertices for shape in file";
+        return false;
+    }
 
     cells.emplace(num, std::move(cell));
     std::cout << "Parsed cell " << num << " " << cells.at(num) << std::endl;
-    return {true, "Success"};
+    return true;
 }
 
 Model::Model(const std::string fileName) :
@@ -95,7 +108,8 @@ Result<Model> Model::load()
 
     std::string line;
     int lineNum = 0;
-    simpleResult result;
+    bool success;
+    std::string error = "Unknown Error";
 
     while (std::getline(file, line)) {
         lineNum++;
@@ -104,25 +118,26 @@ Result<Model> Model::load()
             case '\r':
             case '\0':
             case '#':
-                result = {true, "Success"};
+                success = true;
                 break;
             case 'm':
-                result = parseMaterial(line);
+                success = parseMaterial(line, error);
                 break;
             case 'v':
-                result = parseVertex(line);
+                success = parseVertex(line, error);
                 break;
             case 'c':
-                result = parseCell(line);
+                success = parseCell(line, error);
                 break;
             default:
-                result = {false, "Invalid start character in file"};
+                error = "Invalid start character in file";
+                success = false;
                 break;
         }
-        if (not result.success) {
-            result.error += " at line ";
-            result.error += std::to_string(lineNum);
-            return {false, {}, result.error};
+        if (not success) {
+            error += " at line ";
+            error += std::to_string(lineNum);
+            return {false, {}, error};
         }
     }
     return {true, *this};

@@ -6,11 +6,6 @@
 #include "Cell.h"
 #include "Result.h"
 
-struct simpleResult
-{
-    bool success = false;
-    std::string error = "Unknown Error";
-};
 
 class Model
 {
@@ -20,11 +15,11 @@ private:
     std::map<int, Material> materials;
     std::map<int, Cell> cells;
 
-    simpleResult parseVertex(std::string line);
+    bool parseVertex(std::string line, std::string& error);
 
-    simpleResult parseMaterial(std::string line);
+    bool parseMaterial(std::string line, std::string& error);
 
-    simpleResult parseCell(std::string line);
+    bool parseCell(std::string line, std::string& error);
 
 public:
     Model() = default;
