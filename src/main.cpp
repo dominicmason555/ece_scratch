@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    if (auto model = Model("../ExampleModel1.mod").load()) {
+    if (auto model = Model("../ExampleModel2.mod").load()) {
 
         model->describeMaterials();
         model->describeVertices();

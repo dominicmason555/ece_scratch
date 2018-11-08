@@ -27,12 +27,13 @@ std::ostream &operator<<(std::ostream &os, const Shape &shape)
 std::istream &operator>>(std::istream &in, Material &out)
 {
     in >> out.density;
+    in >> out.colour;
     in >> out.name;
     return in;
 }
 
 std::ostream &operator<<(std::ostream &out, const Material &mat)
 {
-    out << mat.name << " with a density of " << mat.density;
+    out << mat.name << " with a density of " << mat.density << " with colour " << mat.colour;
     return out;
 }

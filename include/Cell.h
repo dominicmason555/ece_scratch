@@ -18,6 +18,7 @@ public:
     friend std::istream &operator>>(std::istream &in, Material &out);
 
     int density = -1;
+    std::string colour;
     std::string name;
 };
 
