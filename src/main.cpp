@@ -4,19 +4,19 @@
 
 int main(int argc, char *argv[])
 {
-    if (auto file = Model("../ExampleModel1.mod").load()) {
+    if (auto model = Model("../ExampleModel1.mod").load()) {
 
-        file->describeMaterials();
-        file->describeVertices();
-        file->describeCells();
+        model->describeMaterials();
+        model->describeVertices();
+        model->describeCells();
 
-        if (auto cell = file->getCell(2))
+        if (auto cell = model->getCell(1))
             std::cout << cell << std::endl;
         else
             std::cout << cell.error << std::endl;
 
     } else
-        std::cout << file.error << std::endl;
+        std::cout << model.error << std::endl;
 
     return 0;
 }

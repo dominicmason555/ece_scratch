@@ -23,6 +23,7 @@ private:
 
 public:
     Model() = default;
+    ~Model() = default;
 
     explicit Model(std::string fileName);
 
